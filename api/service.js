@@ -1,31 +1,29 @@
 import axios from 'axios'
-const API_URL = 'http://192.168.1.105:8000/api/'
+const API = 'http://192.168.1.105:8000/api'
 
-// export const createUser = async () => {
-//     const response
-// }
+export const signin = async (post) => {
+    const { data } = await axios.post(`${API}/user/token/`, post);
+    return await data;
+};
 
-export const signin = async (data) => {
-    const response = axios.post(API_URL + 'user/token/', data)
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+export const signup = async (post) => {
+    try {
+        const { data } = await axios.post(`${API}/user/create/`, post);
+        return data;
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.email) {
+            const errorMessage = error.response.data.email[0];
+            throw new Error(errorMessage);
+        }
+        throw error;
+    }
+};
 
-    return response
-}
-
-export const signup = async (data) => {
-
-    const response = axios.post(API_URL + 'user/create/', data)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-
-    return response
+export const getRecipes = async ({ queryKey }) => {
+    const { data } = await axios.get(`${API}/recipe/recipes/`, {
+        headers: {
+            Authorization: `Token ${queryKey[1].toString()}`,
+        }
+    })
+    return data
 }
