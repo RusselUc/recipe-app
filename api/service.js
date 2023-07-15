@@ -27,3 +27,13 @@ export const getRecipes = async ({ queryKey }) => {
     })
     return data
 }
+
+export const getRecipe = async ({ queryKey }) => {
+    const { data } = await axios.get(`${API}/recipe/recipes/${queryKey[2]}/`,
+        {
+            headers: {
+                Authorization: `Token ${queryKey[1].toString()}`
+            }
+        })
+    return data
+}
