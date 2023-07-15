@@ -8,7 +8,7 @@ import { useMutation } from 'react-query'
 import { AuthContext } from '../context/AuthProvider'
 
 const SingIn = () => {
-    const [form, setForm] = useState({ email: '', password: '' })
+    const [form, setForm] = useState({ email: 'russel@example.com', password: 'string' })
     const { navigate } = useNavigation()
     const { setToken } = useContext(AuthContext)
 
@@ -27,8 +27,14 @@ const SingIn = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Recipe App</Text>
             <Text style={styles.subTitle}>Sign In to your account</Text>
-            <TextInput style={styles.textInput} placeholder='usuario@email.com' onChangeText={(text) => setForm({ ...form, email: text })} />
-            <TextInput style={styles.textInput} placeholder='contraseña' secureTextEntry={true} onChangeText={(text) => setForm({ ...form, password: text })} />
+            <TextInput style={styles.textInput}
+                placeholder='usuario@email.com'
+                value={form.email}
+                onChangeText={(text) => setForm({ ...form, email: text })} />
+            <TextInput style={styles.textInput}
+                placeholder='contraseña' secureTextEntry={true}
+                value={form.password}
+                onChangeText={(text) => setForm({ ...form, password: text })} />
             <Button onPress={() => mutate(form)} disabled={!disabled()} text="Entrar" />
 
             <TouchableOpacity style={styles.buttonSignup} onPress={() => navigate("signup")}>
