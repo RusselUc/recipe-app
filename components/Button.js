@@ -1,13 +1,12 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 
-const Button = (props) => {
-    const { disabled, text } = props;
+const Button = ({ disabled, text, style, onPress }) => {
 
     return (
         <TouchableOpacity
-            style={[styles.button, disabled && styles.disabledButton]}
-            {...props}
+            style={[style, disabled && styles.disabledButton]}
             disabled={disabled}
+            onPress={onPress}
         >
             <Text style={[styles.text, disabled && styles.disabledText]}>{text}</Text>
         </TouchableOpacity>
@@ -16,24 +15,16 @@ const Button = (props) => {
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 14,
-        color: '#fff'
-    },
-    button: {
-        marginTop: 20,
-        width: '60%',
-        height: 50,
-        backgroundColor: '#5A75FA',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
+        fontSize: 18,
+        color: '#fff',
+        fontWeight: '400'
     },
     disabledText: {
-        color: 'gray'
+        // color: 'gray'
+        color: '#43927d'
     },
     disabledButton: {
         backgroundColor: 'lightgray',
-        // Aquí puedes agregar cualquier otro estilo que desees para un botón desactivado
     }
 })
 
