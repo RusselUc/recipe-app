@@ -4,7 +4,8 @@ import Button from '../components/Button'
 import { StatusBar } from 'expo-status-bar'
 import { signin } from '../api/service'
 import { useNavigation } from '@react-navigation/native'
-import { useMutation } from 'react-query'
+
+import { useMutation } from '@tanstack/react-query'
 import { AuthContext } from '../context/AuthProvider'
 
 const SingIn = () => {
@@ -12,12 +13,13 @@ const SingIn = () => {
     const { navigate } = useNavigation()
     const { setToken } = useContext(AuthContext)
 
-    const { mutate, data, error, isLoading } = useMutation(signin, {
-        onSuccess: async (data) => {
+    const { mutate, data, error, isLoading } = useMutation({
+        mutationFn: signin, onSuccess: async (data) => {
             setToken(data?.token)
             data && navigate("recipes")
         }
     })
+
 
     const disabled = () => {
         return form.email !== '' && form.password !== ''
@@ -25,21 +27,23 @@ const SingIn = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Recipe App</Text>
-            <Text style={styles.subTitle}>Sign In to your account</Text>
+            <Text style={styles.title}>Recetas</Text>
+            <Text style={styles.subTitle}>Ingresa a tu cuenta</Text>
+
+            <Text style={styles.label}>Correo electronico</Text>
             <TextInput style={styles.textInput}
                 placeholder='usuario@email.com'
                 value={form.email}
+                keyboardType='email-address'
                 onChangeText={(text) => setForm({ ...form, email: text })} />
+
+            <Text style={styles.label}>Contraseña</Text>
             <TextInput style={styles.textInput}
                 placeholder='contraseña' secureTextEntry={true}
                 value={form.password}
                 onChangeText={(text) => setForm({ ...form, password: text })} />
-            <Button onPress={() => mutate(form)} disabled={!disabled()} text="Entrar" />
-
-            <TouchableOpacity style={styles.buttonSignup} onPress={() => navigate("signup")}>
-                <Text style={styles.text}> Crear cuenta</Text>
-            </TouchableOpacity>
+            <Button style={styles.button} onPress={() => mutate(form)} disabled={!disabled()} text="Entrar" />
+            <Button style={styles.buttonSignup} onPress={() => navigate("signup")} text="Crear cuenta" />
             <StatusBar style="auto" />
         </View>
     )
@@ -48,15 +52,15 @@ const SingIn = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f1f1f1',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
 
     title: {
         fontSize: 50,
-        color: '#34434D',
-        fontWeight: 'bold'
+        color: '#43927d',
+        fontWeight: '800'
     },
 
     subTitle: {
@@ -64,16 +68,35 @@ const styles = StyleSheet.create({
         color: 'gray'
     },
 
+    label: {
+        alignSelf: 'flex-start',
+        paddingStart: 30,
+        letterSpacing: 0.8,
+        fontWeight: '300',
+        fontSize: 12,
+        paddingBottom: 5
+    },
+
     text: {
         fontSize: 14,
         color: '#fff'
     },
 
-    buttonSignup: {
+    button: {
+        backgroundColor: '#43927d',
         marginTop: 20,
         width: '60%',
-        height: 50,
-        backgroundColor: '#00afff',
+        height: 40,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    buttonSignup: {
+        backgroundColor: '#454545',
+        marginTop: 20,
+        width: '60%',
+        height: 40,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
@@ -81,13 +104,13 @@ const styles = StyleSheet.create({
 
     textInput: {
         padding: 10,
-        paddingStart: 30,
+        paddingStart: 20,
+        marginBottom: 20,
         width: '80%',
         height: 50,
-        marginTop: 20,
         borderRadius: 8,
-        backgroundColor: '#fff'
-    }
+        backgroundColor: '#f3f3f3'
+    },
 });
 
 
