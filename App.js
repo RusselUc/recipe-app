@@ -1,15 +1,24 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Navigation from './Navigation';
 import AuthProvider from './context/AuthProvider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+    },
+  },
+})
 
-const queryClient = new QueryClient()
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Navigation />
-      </AuthProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AuthProvider>
+          <Navigation />
+        </AuthProvider>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }
