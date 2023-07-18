@@ -1,9 +1,6 @@
-import { useContext, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { AuthContext } from '../context/AuthProvider'
 import { useNavigation } from '@react-navigation/native'
-import { useQuery } from 'react-query'
-import { getRecipe } from '../api/service'
+
 
 const Recipe = ({ title, time_minutes, price, id }) => {
     const { navigate } = useNavigation()
@@ -32,11 +29,11 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        backgroundColor: "white",
-        borderRadius: 15,
+        backgroundColor: "#fff",
+        borderRadius: 8,
         height: 80,
         marginBottom: 10,
-        elevation: 5,
+        elevation: 2,
         marginLeft: 8,
         marginRight: 8
     },
