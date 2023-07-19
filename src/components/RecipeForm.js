@@ -9,12 +9,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 
 import { BottomSheetModal, BottomSheetModalProvider, } from '@gorhom/bottom-sheet'
+import CameraComponent from './CameraComponent'
 
 const RecipeForm = () => {
 
     const sheetRef = useRef(null)
 
     const [open, setOpen] = useState(false)
+    const [cameraOpen, setCameraOpen] = useState(false)
 
     const { navigate } = useNavigation()
     const { token } = useContext(AuthContext)
@@ -38,8 +40,7 @@ const RecipeForm = () => {
     const snapPoints = ["25%"];
 
     const handle = () => {
-        sheetRef.current?.present();
-        setOpen(true)
+        setCameraOpen(true)
     }
 
     const pickImage = async () => {
@@ -63,7 +64,7 @@ const RecipeForm = () => {
         }
     };
 
-    return (
+    return !cameraOpen ? (
         <BottomSheetModalProvider>
             <ScrollView style={{ height: '100%', backgroundColor: "white" }}>
                 <SafeAreaView style={styles.container}>
@@ -106,7 +107,7 @@ const RecipeForm = () => {
                             onChangeText={(text) => setForm({ ...form, description: text })} />
                         {
                             !form.image.uri && (
-                                <TouchableOpacity style={styles.contentAdd} onPress={() => handle(0)}>
+                                <TouchableOpacity style={styles.contentAdd} onPress={() => handle()}>
                                     <Text style={styles.addText}>+ Añadir imagen</Text>
                                 </TouchableOpacity>
                             )
@@ -119,32 +120,10 @@ const RecipeForm = () => {
                     </View>
                 </SafeAreaView>
 
-                <BottomSheetModal
-                    ref={sheetRef}
-                    snapPoints={snapPoints}
-                    backgroundStyle={{ borderRadius: 50 }}
-                    onDismiss={() => setOpen(false)}
-                    style={{
-                        borderWidth: 0.5,
-                        borderColor: 'black',
-                        borderRadius: 30,
-                    }}
-                >
-
-                    <View style={styles.contentOptions}>
-                        <TouchableOpacity style={styles.buttonOption} onPress={() => pickImage()}>
-                            <Ionicons name="image" size={40} color="black" />
-                            <Text>Galería</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => navigate('camera')} style={styles.buttonOption} >
-                            <Ionicons name="camera" size={40} color="black" />
-                            <Text>Cámara</Text>
-                        </TouchableOpacity>
-                    </View>
-                </BottomSheetModal>
             </ScrollView>
         </BottomSheetModalProvider >
+    ) : (
+        <CameraComponent form={form} setForm={setForm} setCameraOpen={setCameraOpen} />
     )
 }
 
