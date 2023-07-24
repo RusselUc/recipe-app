@@ -1,14 +1,17 @@
-import axios from 'axios'
-const API = 'http://192.168.1.85:8000/api'
+import axiosInstance from './axiosInstance';
 
 export const signin = async (post) => {
-    const { data } = await axios.post(`${API}/user/token/`, post);
-    return await data;
+    try {
+        const { data } = await axiosInstance.post('/user/token/', post);
+        return data;
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const signup = async (post) => {
     try {
-        const { data } = await axios.post(`${API}/user/create/`, post);
+        const { data } = await axiosInstance.post('/user/create/', post);
         return data;
     } catch (error) {
         if (error.response && error.response.data && error.response.data.email) {
@@ -19,80 +22,47 @@ export const signup = async (post) => {
     }
 };
 
-export const getRecipes = async ({ queryKey }) => {
-    const { data } = await axios.get(`${API}/recipe/recipes/`, {
-        headers: {
-            Authorization: `Token ${queryKey[1].toString()}`,
-        }
-    })
-    return data
-}
-
-// export const getRecipe = async ({ queryKey }) => {
-//     const { data } = await axios.get(`${API}/recipe/recipes/${queryKey[2]}/`, {
-//         headers: {
-//             Authorization: `Token ${queryKey[1].toString()}`
-//         }
-//     })
-//     return data
-// };
-
-export const getRecipe = async ({ queryKey }) => {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            const { data } = await axios.get(`${API}/recipe/recipes/${queryKey[2]}/`, {
-                headers: {
-                    Authorization: `Token ${queryKey[1].toString()}`
-                }
-            });
-            resolve(data);
-        }, 2000); // 2000 milisegundos = 2 segundos
-    });
+export const getRecipes = async () => {
+    try {
+        const { data } = await axiosInstance.get('/recipe/recipes/');
+        return data;
+    } catch (error) {
+        throw error;
+    }
 };
 
+export const getRecipe = async ({ queryKey }) => {
+    try {
+        const { data } = await axiosInstance.get(`/recipe/recipes/${queryKey[1]}/`);
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
 
-// export const createRecipe = async ({ mutationKey }) => {
-//     console.log(mutationKey[1])
-//     try {
-//         const { data } = await axios.post(`${API}/recipe/recipes/`, mutationKey[1], {
-//             headers: {
-//                 'Content-Type': 'multipart/form-data',
-//                 Authorization: `Token ${mutationKey[0]}`,
-//             }
-//         });
-//         return data;
-//     } catch (error) {
-//         console.log(error.response.data)
-//     }
-
-// }
-
-export const createRecipe = async ({ mutationKey }) => {
+export const createRecipe = async (recipeData) => {
+    console.log(recipeData)
     try {
         const formData = new FormData();
         formData.append('image', {
-            uri: mutationKey[1].image.uri,
+            uri: recipeData.image.uri,
             name: 'image.jpg',
             type: 'image/jpg',
         });
-        formData.append('title', mutationKey[1].title);
-        formData.append('time_minutes', mutationKey[1].time_minutes);
-        formData.append('price', mutationKey[1].price);
-        formData.append('description', mutationKey[1].description);
+        formData.append('title', recipeData.title);
+        formData.append('time_minutes', recipeData.time_minutes);
+        formData.append('price', recipeData.price);
+        formData.append('description', recipeData.description);
 
-        console.log(formData)
-
-        const { data } = await axios.post(`${API}/recipe/recipes/`, formData, {
+        const { data } = await axiosInstance.post('/recipe/recipes/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                Authorization: `Token ${mutationKey[0]}`,
             },
         });
 
         return data;
     } catch (error) {
-        console.log(error.response.data);
+        console.log(error.message)
+        throw error;
     }
 };
-
-
