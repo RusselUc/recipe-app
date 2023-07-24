@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Navigation from './Navigation';
-import AuthProvider from './context/AuthProvider';
+import Navigation from './src/routes/Navigation';
+import AuthProvider from './src/context/AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const queryClient = new QueryClient({
