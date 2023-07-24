@@ -51,8 +51,6 @@ const RecipeForm = () => {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.canceled) {
             setForm({
                 ...form, image: {
@@ -115,7 +113,7 @@ const RecipeForm = () => {
 
                         <View style={styles.contentButton}>
                             <Button style={styles.cancel} text='Cancelar' onPress={() => navigate('recipes')} />
-                            <Button style={styles.add} text='Añadir' onPress={() => mutate({ mutationKey: [token, form] })} />
+                            <Button style={styles.add} text='Añadir' onPress={() => mutate(form)} />
                         </View>
                     </View>
                 </SafeAreaView>

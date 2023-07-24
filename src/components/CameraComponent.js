@@ -24,12 +24,9 @@ const CameraComponent = ({ form, setForm, setCameraOpen }) => {
     const takePicture = async () => {
         if (cameraRef) {
             try {
-                console.log(cameraRef.current);
                 const options = { quality: 0.0, skipProcessing: false };
-                // Configurar el whiteBalance antes de tomar la foto
-                // cameraRef.current.setWhiteBalanceAsync(whiteBalance);
                 const data = await cameraRef.current.takePictureAsync(options);
-                // console.log(data);
+
                 setForm({
                     ...form,
                     image: {
@@ -39,7 +36,6 @@ const CameraComponent = ({ form, setForm, setCameraOpen }) => {
                     },
                 });
             } catch (error) {
-                console.log(error);
             }
         }
     };
@@ -49,7 +45,6 @@ const CameraComponent = ({ form, setForm, setCameraOpen }) => {
             try {
                 setCameraOpen(false);
             } catch (error) {
-                console.log(error);
             }
         }
     };

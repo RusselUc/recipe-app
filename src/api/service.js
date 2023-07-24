@@ -41,7 +41,6 @@ export const getRecipe = async ({ queryKey }) => {
 };
 
 export const createRecipe = async (recipeData) => {
-    console.log(recipeData)
     try {
         const formData = new FormData();
         formData.append('image', {
@@ -62,7 +61,6 @@ export const createRecipe = async (recipeData) => {
 
         return data;
     } catch (error) {
-        console.log(error.message)
         throw error;
     }
 };
