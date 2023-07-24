@@ -13,7 +13,7 @@ const SingleRecipe = () => {
     const { token } = useContext(AuthContext);
 
 
-    const { data } = useQuery({ queryKey: ['recipes', token, id], queryFn: getRecipe })
+    const { data } = useQuery({ queryKey: ['recipes', id], queryFn: getRecipe })
 
     return (
         <SafeAreaView style={styles.container}>
